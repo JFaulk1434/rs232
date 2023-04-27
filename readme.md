@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This script is designed to constantly send and receive RS232 messages, allowing the program to time how long it took for the message to be sent down the line and come back. It is intended to be used to test RS232 connections.
+This is a handful of scripts that use RS232 and TCP to test signals. Settings are all located in settings.ini
 
 ## Dependencies
 

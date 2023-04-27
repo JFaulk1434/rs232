@@ -2,38 +2,46 @@ import serial
 import socket
 import time
 import datetime
+import configparser
+
+config = configparser.ConfigParser()
+config.read('settings.ini')
 
 
 # Define time between commands
 delay = 3
 
 # Define your RS232 parameters
+device = config.get("settings", "device")
+baudrate = int(config.get("rs232_settings", "baud_rate"))
+timeout = int(config.get("rs232_settings", "timeout"))
+message = config.get('settings', "message")
 
-device = "/dev/ttyUSB0"
-baudrate = 115200
-timeout = 1
 
+# Create serial Connection
 ser = serial.Serial(device, baudrate=baudrate, timeout=timeout)
 
+
 # Define your TCP parameters
-TCP_IP = "10.0.10.66"
-TCP_PORT = 5002
-BUFFER_SIZE = 1024
-MESSAGE = "PWR=1:"
+ip = config.get("tcp_settings", "ip")
+port = config.get("tcp_settings", "port")
+buffer = config.get("tcp_settings", "buffer")
 
 
 def tcp_rs232():
     """Send TCP Command and wait for response on RS232"""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((TCP_IP, TCP_PORT))
+    s.connect((ip, port))
+
+    message_encoded = message.encode("ascii") + b'\r\n'
 
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"{timestamp}")
 
     # Send TCP Message
     start_time = time.time()
-    s.send(MESSAGE.encode("Ascii"))
-    print(f"Sent TCP: {MESSAGE}")
+    s.send(message.encode)
+    print(f"Sent TCP: {message}")
 
     # Wait for RS232 response
     data = b""
@@ -49,6 +57,7 @@ def tcp_rs232():
     print("")
 
 
-while True:
-    tcp_rs232()
-    time.sleep(delay)
+if __name__ == "__main__":
+    while True:
+        tcp_rs232()
+        time.sleep(delay)

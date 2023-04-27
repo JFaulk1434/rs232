@@ -1,32 +1,39 @@
 import socket
 import time
 import datetime
+import configparser
+
+config = configparser.ConfigParser()
+config.read('settings.ini')
+
+message = config.get('settings', 'message')
+
 
 # Define time between commands
 delay = 3
 
 # Define your TCP parameters
-TCP_IP = "10.0.10.66"
-TCP_PORT = 5002
-BUFFER_SIZE = 1024
-MESSAGE = "Hello, World!"
+ip = config.get("tcp_settings", "ip")
+port = config.get("tcp_settings", "port")
+buffer = config.get("tcp_settings", "buffer")
 
 
 def tcp_tcp():
     """Send TCP Command and wait for response on TCP"""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((TCP_IP, TCP_PORT))
+    s.connect((ip, port))
 
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"{timestamp}")
 
+    message_encoded = message.encode('ascii') + b'\r\n'
     # Send TCP Message
     start_time = time.time()
-    s.send(MESSAGE.encode("Ascii"))
-    print(f"Sent TCP: {MESSAGE}")
+    s.send(message_encoded)
+    print(f"Sent TCP: {message}")
 
     # Receive TCP Response
-    data = s.recv(BUFFER_SIZE)
+    data = s.recv(buffer)
     end_time = time.time()
 
     # Calculate the response time and print
@@ -36,6 +43,7 @@ def tcp_tcp():
     print("")
 
 
-while True:
-    tcp_tcp()
-    time.sleep(delay)
+if __name__ == "__main__":
+    while True:
+        tcp_tcp()
+        time.sleep(delay)
