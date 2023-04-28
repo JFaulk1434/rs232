@@ -23,7 +23,7 @@ This is a handful of scripts that use RS232 and TCP to test signals. Settings ar
 
 ## Configuration
 
-- Adjust the `port`, `baudrate`, `timeout`, `bytesize`, and `stopbits` parameters in the script to match the settings of the RS232 connection being tested.
+- Adjust the `port`, `baudrate`, `timeout`, `bytesize`, and `stopbits` parameters in the settings.ini to match the settings of the RS232 connection being tested.
 
 # Find USB to RS232 adapter for PySerial
 
