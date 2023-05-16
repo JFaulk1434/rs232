@@ -4,9 +4,9 @@ import datetime
 import configparser
 
 config = configparser.ConfigParser()
-config.read('settings.ini')
+config.read("settings.ini")
 
-message = config.get('settings', 'message')
+message = config.get("settings", "message")
 
 
 # Define time between commands
@@ -14,8 +14,8 @@ delay = 3
 
 # Define your TCP parameters
 ip = config.get("tcp_settings", "ip")
-port = config.get("tcp_settings", "port")
-buffer = config.get("tcp_settings", "buffer")
+port = int(config.get("tcp_settings", "port"))
+buffer = int(config.get("tcp_settings", "buffer"))
 
 
 def tcp_tcp():
@@ -26,7 +26,7 @@ def tcp_tcp():
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"{timestamp}")
 
-    message_encoded = message.encode('ascii') + b'\r\n'
+    message_encoded = message.encode("ascii") + b"\r\n"
     # Send TCP Message
     start_time = time.time()
     s.send(message_encoded)
@@ -38,7 +38,7 @@ def tcp_tcp():
 
     # Calculate the response time and print
     response_time = end_time - start_time
-    print(f"Received TCP: {data.decode('Ascii')}")
+    print(f"Received TCP: {data.decode('Ascii', 'ignore')}")
     print(f"Response Time: {response_time:.3f}s")
     print("")
 
