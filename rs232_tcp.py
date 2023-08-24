@@ -5,7 +5,7 @@ import datetime
 import configparser
 
 config = configparser.ConfigParser()
-config.read('settings.ini')
+config.read("settings.ini")
 
 
 # Define time between commands
@@ -15,7 +15,7 @@ delay = 3
 device = config.get("settings", "device")
 baudrate = int(config.get("rs232_settings", "baud_rate"))
 timeout = int(config.get("rs232_settings", "timeout"))
-message = config.get('settings', "message")
+message = config.get("settings", "message")
 
 ser = serial.Serial(device, baudrate=baudrate, timeout=timeout)
 
@@ -30,7 +30,7 @@ def rs232_tcp():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip, port))
 
-    message_encoded = message.encode("ascii") + b'\r\n'
+    message_encoded = message.encode("ascii") + b"\r\n"
 
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"{timestamp}")
