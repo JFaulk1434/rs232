@@ -41,9 +41,49 @@ def tcp_tcp():
     print(f"Received TCP: {data.decode('Ascii', 'ignore')}")
     print(f"Response Time: {response_time:.3f}s")
     print("")
+    time.sleep(delay)
+
+
+def listen_for_tcp_messages(port=1234):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(("0.0.0.0", port))
+    server_socket.listen(5)
+
+    print(f"Listening on port {port}...")
+
+    while True:
+        client_socket, client_address = server_socket.accept()
+        data = client_socket.recv(1024).decode()
+        print(f"Received: {data} from {client_address}")
+        client_socket.close()
+
+
+def listen_for_tcp_messages_with_auth(port=1234, username="admin", password="admin"):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(("0.0.0.0", port))
+    server_socket.listen(5)
+
+    print(f"Listening on port {port} with auth...")
+
+    while True:
+        client_socket, client_address = server_socket.accept()
+        data = client_socket.recv(1024).decode()
+
+        # Fake authentication check
+        if data.startswith(f"{username}:{password}"):
+            print(f"Authenticated! Received: {data} from {client_address}")
+        else:
+            print(f"Authentication failed from {client_address}")
+            print(f"debug - {data}")
+
+        client_socket.close()
 
 
 if __name__ == "__main__":
-    while True:
-        tcp_tcp()
-        time.sleep(delay)
+    # Uncomment the one you want to test
+
+    # listen_for_tcp_messages(port=8000)
+    listen_for_tcp_messages_with_auth(port=8000, username="admin", password="admin")
+
+    # while True:
+    #     tcp_tcp()
