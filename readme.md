@@ -44,11 +44,3 @@ This is a handful of scripts that use RS232 and TCP to test signals. Settings ar
 1. Open a terminal window
 2. Type `dmesg | grep tty` and press "Enter"
 3. Look for the device name of your USB to RS232 adapter (e.g. `/dev/ttyUSB0`)
-
-## Author
-
-# Justin Faulk
-
-## Version
-
-# 1.0
